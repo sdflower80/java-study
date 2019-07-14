@@ -12,5 +12,6 @@
   </head>
   <body>
   $END$
+	  <div>test</div>
   </body>
 </html>
