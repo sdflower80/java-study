@@ -8,6 +8,8 @@ public class ThreadInterrupt {
         Thread.sleep(3_000);     // requirement 4
         taskThread.interrupt();  // requirement 5
         taskThread.join(1_000);  // requirement 6
+
+        // git push test
     }
     private static Runnable taskThatFinishesEarlyOnInterruption() {
         return () -> {
