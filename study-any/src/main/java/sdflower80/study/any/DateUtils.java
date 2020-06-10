@@ -10,5 +10,7 @@ public class DateUtils {
     public static void main(String[] args) {
         Date date = create(1585692000000L);
         System.out.println(date);
+
+        System.out.println(System.currentTimeMillis());
     }
 }
