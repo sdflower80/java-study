@@ -1,4 +1,4 @@
-package sdflower80.java.util;
+package sdflower80.study.any;
 
 import java.util.Date;
 
