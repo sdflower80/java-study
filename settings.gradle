@@ -2,4 +2,5 @@ rootProject.name = 'java-study'
 include 'study-web'
 include 'study-any'
 include 'study-algorithm'
+include 'study-stream'
 
