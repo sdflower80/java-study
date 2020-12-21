@@ -1,7 +1,7 @@
 package sdflower80.study.algorithm;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author sdflower
@@ -12,38 +12,38 @@ public class LongestSubstring {
     public static void main(String[] args) {
         /*int pwwkew = new LongestSubstring().lengthOfLongestSubstring("pwwk");
         System.out.println(pwwkew);*/
-
-        System.out.println(new LongestSubstring().resolve2("pwwkew"));
+        System.out.println(new LongestSubstring().resolve2("abcazabb"));
     }
 
     public int resolve1(String s) {
-        int n = s.length(), ans = 0;
+        int ans = 0;
         int[] index = new int[128]; // current index of character
         // try to extend the range [i, j]
-        for (int j = 0, i = 0; j < n; j++) {
-            i = Math.max(index[s.charAt(j)], i);
-            ans = Math.max(ans, j - i + 1);
-            index[s.charAt(j)] = j + 1;
+        int k = 0;
+        for (int i = 0; i < s.length(); i++) {
+            k = Math.max(index[s.charAt(i)], k);
+            System.out.printf("s=%s, index=%d, k=%d, kc=%s\n", s.charAt(i), index[s.charAt(i)], k, s.charAt(k));
+            ans = Math.max(ans, i - k + 1);
+            index[s.charAt(i)] = i + 1;
         }
         return ans;
     }
 
-    // pww
+    /**
+     * "abcazabb"
+     * "pwwkew"
+     */
     public int resolve2(String s) {
+        Map<Character, Integer> index = new HashMap<>();
+        int max = 0;
         int start = 0;
-        int longestLen = 0;
-        Set<String> index = new HashSet<>();
-
-        for(int i = 0; i < s.length(); i++) {
-            String one = String.valueOf(s.charAt(i));
-            if (index.contains(one)) {
-                int curLen = s.substring(start, i).length();
-                longestLen = Math.max(longestLen, curLen);
-                start = i;
-            } else {
-                index.add(one);
-            }
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            max = Math.max(max, i - start);
+            start = Math.max(start, index.getOrDefault(c, 0) + 1);
+            index.put(c, i);
+            System.out.printf("c=%s, start=%d \n", c, start);
         }
-        return longestLen;
+        return max;
     }
 }
