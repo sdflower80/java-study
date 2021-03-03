@@ -19,12 +19,12 @@ public class LongestSubstring {
         int ans = 0;
         int[] index = new int[128]; // current index of character
         // try to extend the range [i, j]
-        int k = 0;
-        for (int i = 0; i < s.length(); i++) {
-            k = Math.max(index[s.charAt(i)], k);
-            System.out.printf("s=%s, index=%d, k=%d, kc=%s\n", s.charAt(i), index[s.charAt(i)], k, s.charAt(k));
-            ans = Math.max(ans, i - k + 1);
-            index[s.charAt(i)] = i + 1;
+        int left = 0;
+        for (int right = 0; right < s.length(); right++) {
+            left = Math.max(index[s.charAt(right)], left);
+            System.out.printf("s=%s, index=%d, k=%d, kc=%s\n", s.charAt(right), index[s.charAt(right)], left, s.charAt(left));
+            ans = Math.max(ans, right - left + 1);
+            index[s.charAt(right)] = right + 1;
         }
         return ans;
     }
@@ -36,13 +36,13 @@ public class LongestSubstring {
     public int resolve2(String s) {
         Map<Character, Integer> index = new HashMap<>();
         int max = 0;
-        int start = 0;
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            max = Math.max(max, i - start);
-            start = Math.max(start, index.getOrDefault(c, 0) + 1);
-            index.put(c, i);
-            System.out.printf("c=%s, start=%d \n", c, start);
+        int left = 0;
+        for (int right = 0; right < s.length(); right++) {
+            char c = s.charAt(right);
+            left = Math.max(left, index.getOrDefault(c, left));
+            max = Math.max(max, right - left + 1);
+            index.put(c, right + 1);
+            System.out.printf("c=%s, left=%d \n", c, left);
         }
         return max;
     }
