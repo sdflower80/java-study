@@ -5,97 +5,78 @@ import java.util.Arrays;
 public class IpCase {
 
     public static void main(String[] args) {
-        String ipAddr = "1234567";
-        /*
-        6
-
-        4=>
-        1, 1, 1, 4
-        1, 1, 2, 3
-        1, 1, 3, 2
-        1, 1, 4, 1
-        */
-
-        /*int result1 = solve(ipAddr);
-        System.out.println(result1);
-
-        int result2 = solve2(ipAddr.length());
-        System.out.println(result2);*/
-
-        int result3 = countValidIp(ipAddr);
-        System.out.println(result3);
+        String ipAddr = "111425";
+        
+        int cnt = solve3(ipAddr);
+        System.out.println("ip case count is " + cnt);
+        // String[] result = split(ipAddr, 2);
+        // System.out.printf("a=%s, b=%s", result[0], result[1]);
     }
 
-    private static int solve(String ipAddr) {
+    private static int solve3(String ipAddr) {
+        
+        /*
+         * 1, 1, 1, *
+         * 1, 1, 2, *
+         * 1, 1, 3, *
+         * 1, 2, 1, *
+         * 1, 2, 2, *
+         * 1, 2, 3, *
+         * 1, 3, 1, *
+         * 1, 3, 2, *
+         * 1, 3, 3, *
+         */
+        String tmp = ipAddr;
         int cnt = 0;
-        String[] ip_arr = new String[4];
+        // String[] arr = null;
+        for(int i = 1; i <= 3; i ++) {
+            String[] arr = subsAndSplit(tmp, i);
+            String a = arr[0];
+            if (a.length() == 0 || Integer.valueOf(a) > 255) break;
 
-        String i_str = ipAddr;
-        for (int i = 0; i < 3 && i_str.length() >= (i + 1); i++) {
-            ip_arr[0] = i_str.substring(0, i + 1);
+            for (int j = 1; j <= 3; j ++) {
+                String[] brr = subsAndSplit(arr[1], j);
+                String b = brr[0];
+                if (b.length() == 0 || Integer.valueOf(b) > 255) break;
 
-            String j_str = i_str.substring(i + 1);
-            for (int j = 0; j < 3 && j_str.length() >= (j + 1); j++) {
-                ip_arr[1] = j_str.substring(0, j + 1);
+                for(int k = 1; k <= 3; k ++) {
+                    String[] crr = subsAndSplit(brr[1], k);
+                    String c = crr[0];
+                    String d = crr[1];
 
-                String k_str = j_str.substring(j + 1);
-                for (int k = 0; k < 3 && k_str.length() >= (k + 1); k++) {
-                    ip_arr[2] = k_str.substring(0, k + 1);
-                    ip_arr[3] = k_str.substring(k + 1);
-                    if (ip_arr[3].length() > 0 && ip_arr[3].length() <= 3) {
-                        cnt++;
-                        System.out.println(Arrays.toString(ip_arr));
+                    if (c.length() == 0 || d.length() == 0 || d.length() > 3 || Integer.valueOf(c) > 255 || Integer.valueOf(d) > 255) {
+                        System.out.printf("%s.%s.%s.%s => break.\n", a, b, c, d);
+                        break;
                     }
+                    cnt ++;
+                    System.out.printf("%s.%s.%s.%s => normal. cnt=%d\n", a, b, c, d, cnt);
                 }
+                // String[] ips = splitIp(ipAddr, j, i);
+                // for(int g = 0; g < ips.length; g ++) {
+                //     System.out.printf("%s,", ips[g]);
+                // }
+                // System.out.println("\n");
             }
         }
+
         return cnt;
     }
 
-    static int countValidIp(String str) {
-        int count = 0;
-
-        /*
-        4 =>
-            i: 1 -> 2
-            j: 2 -> 3
-            4 - 2 - 1 = 3
-
-         */
-        for (int i = 1; i < str.length() - 2; i++) {
-            for (int j = i + 1; j < str.length() - 1; j++) {
-                int n = str.length() - j - 1;
-                count += n;
-                System.out.printf("(%d - %d) = %d\n", str.length(), j+1, n);
-            }
-            System.out.println("-");
+    private static String[] subsAndSplit(String src, int ln) {
+        if (src == null || src.length() <= 0) {
+            return new String[] {"", ""};
         }
 
-        return count;
-    }
-
-    static int solve2(int n) {
-        int c = 0;
-
-        /*
-        6
-        6-1 = 5 => (1, x)
-        5-1 = 4 => (1, 1, x)
-        4-1 = 3 => (1, 1, 1, x)
-        */
-        for (int i = 1; i <= 3; i++) {
-            int r1 = n - i;
-            for (int j = 1; j <= 3 && r1 > 1; j++) {
-                int r2 = r1 - j;
-                for (int k = 1; k <= 3 && r2 > 1; k++) {
-                    int r3 = r2 - k;
-                    if (r3 >= 1 && r3 <= 3) {
-                        System.out.printf("%d, %d, %d\n", r1, r2, r3);
-                        c += 1;
-                    }
-                }
-            }
+        if (src.length() < ln) {
+            return new String[] {src, ""};
         }
-        return c;
+
+        if (ln == 0) {
+            return new String[] {"", src};
+        }
+
+        String a = src.substring(0, ln);
+        String b = src.length() == ln ? "" : src.substring(ln);
+        return new String[] {a, b};
     }
 }
