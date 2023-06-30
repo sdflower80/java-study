@@ -1,7 +1,5 @@
 package sdflower80.study.algorithm;
 
-import java.util.Arrays;
-
 public class IpCase {
 
     public static void main(String[] args) {
